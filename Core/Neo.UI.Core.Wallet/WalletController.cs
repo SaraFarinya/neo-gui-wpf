@@ -1231,11 +1231,11 @@ namespace Neo.UI.Core.Wallet
                         var assetItem = new FirstClassAssetItem(
                             asset.Asset.AssetId.ToString(),
                             asset.Asset.Owner,
-                            asset.Asset.AssetType,
-                            valueText)
+                            asset.Asset.AssetType)
                         {
                             Name = assetName,
-                            Issuer = $"{Strings.UnknownIssuer}[{asset.Asset.Owner}]"
+                            Issuer = $"{Strings.UnknownIssuer}[{asset.Asset.Owner}]",
+                            TotalBalance = valueText
                         };
 
                         this.currentWalletInfo.AddAsset(assetItem);
@@ -1265,28 +1265,37 @@ namespace Neo.UI.Core.Wallet
 
             foreach (var nep5ScriptHash in this.nep5WatchScriptHashes)
             {
-                var assetItem = this.blockchainService.GetTotalNEP5Balance(nep5ScriptHash, accountScriptHashes);
+                var balances = this.blockchainService.GetNEP5Balances(nep5ScriptHash, accountScriptHashes, out var decimals);
 
-                if (assetItem == null) continue;
+                if (balances == null) continue;
 
+                var totalBalanceBigInt = balances.Values.Aggregate(BigInteger.Zero, (x, y) => x + y);
+
+                var totalBalance = new BigDecimal(totalBalanceBigInt, decimals);
+                
                 var item = this.currentWalletInfo.GetNEP5Asset(nep5ScriptHash);
 
                 if (item != null)
                 {
-                    if (assetItem.BalanceIsZero)
+                    if (totalBalanceBigInt == BigInteger.Zero)
                     {
                         // TODO If the current balance is zero, remove asset item from collection
                     }
                     else
                     {
-                        // TODO Update balance of existing asset item
+                        item.TotalBalance = totalBalance.ToString();
                     }
                 }
                 else
                 {
                     // Do not add item if it has a balance of zero
-                    if (!assetItem.BalanceIsZero)
+                    if (totalBalanceBigInt != BigInteger.Zero)
                     {
+                        var assetItem = new NEP5AssetItem(nep5ScriptHash.ToString())
+                        {
+                            TotalBalance = totalBalance.ToString()
+                        };
+
                         this.currentWalletInfo.AddAsset(assetItem);
 
                         this.messagePublisher.Publish(new AssetAddedMessage(assetItem));

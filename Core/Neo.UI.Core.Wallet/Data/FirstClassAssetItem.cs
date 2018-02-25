@@ -15,24 +15,20 @@ namespace Neo.UI.Core.Data
 
         public override string Type => this.AssetType.ToString();
 
-        public override string Value { get; }
-
         public string AssetId { get; }
 
         public ECPoint AssetOwner { get; }
 
         public AssetType AssetType { get; }
 
-        public FirstClassAssetItem(string assetId, ECPoint assetOwner, AssetType assetType, string value)
+        public FirstClassAssetItem(string assetId, ECPoint assetOwner, AssetType assetType)
         {
             this.AssetId = assetId;
             this.AssetOwner = assetOwner;
             this.AssetType = assetType;
-
-            this.Value = value;
         }
 
-        public void SetIssuerCertificateQueryResult(CertificateQueryResultType resultType, string subject)
+        internal void SetIssuerCertificateQueryResult(CertificateQueryResultType resultType, string subject)
         {
             switch (resultType)
             {

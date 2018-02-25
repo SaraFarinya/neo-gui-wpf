@@ -1,5 +1,5 @@
 ﻿using Neo.UI.Core.Data.Enums;
-using Neo.Wallets;
+using NeoWallet = Neo.Wallets.Wallet;
 
 namespace Neo.UI.Core.Data
 {
@@ -15,7 +15,7 @@ namespace Neo.UI.Core.Data
 
         public string ScriptHash { get; }
 
-        public string Address => Wallet.ToAddress(UInt160.Parse(this.ScriptHash));
+        public string Address => NeoWallet.ToAddress(UInt160.Parse(this.ScriptHash));
 
         public AccountType Type { get; }
 

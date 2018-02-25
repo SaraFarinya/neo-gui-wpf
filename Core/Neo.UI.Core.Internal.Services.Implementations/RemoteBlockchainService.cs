@@ -5,7 +5,7 @@ using Neo.Network;
 using Neo.UI.Core.Data;
 using Neo.UI.Core.Services.Interfaces;
 
-namespace Neo.UI.Core.Services.Implementations
+namespace Neo.UI.Core.Internal.Services.Implementations
 {
     internal class RemoteBlockchainService :
         BaseBlockchainService,

@@ -18,7 +18,6 @@ using Neo.UI.Core.Globalization.Resources;
 using Neo.UI.Core.Helpers;
 using Neo.UI.Core.Helpers.Extensions;
 using Neo.UI.Core.Messaging.Interfaces;
-using Neo.UI.Core.Services.Implementations.Exceptions;
 using Neo.UI.Core.Services.Interfaces;
 using Neo.UI.Core.Transactions.Interfaces;
 using Neo.UI.Core.Transactions.Parameters;
@@ -122,7 +121,8 @@ namespace Neo.UI.Core.Wallet
 
             if (this.initialized)
             {
-                throw new ObjectAlreadyInitializedException(nameof(IWalletController));
+                // TODO Add exception message to string resources
+                throw new Exception(nameof(IWalletController) + " has already been initialized!");
             }
 
             this.blockchainService.Initialize(this.localNodePort, this.localWSPort, this.blockchainDataDirectoryPath);

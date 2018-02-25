@@ -10,11 +10,10 @@ using Neo.Network;
 using Neo.SmartContract;
 using Neo.UI.Core.Data;
 using Neo.UI.Core.Helpers;
-using Neo.UI.Core.Services.Implementations.Exceptions;
 using Neo.UI.Core.Services.Interfaces;
 using Neo.VM;
 
-namespace Neo.UI.Core.Services.Implementations
+namespace Neo.UI.Core.Internal.Services.Implementations
 {
     internal class LocalBlockchainService :
         BaseBlockchainService,
@@ -60,7 +59,8 @@ namespace Neo.UI.Core.Services.Implementations
 
             if (this.initialized)
             {
-                throw new ObjectAlreadyInitializedException(nameof(IBlockchainService));
+                // TODO Add exception message to string resources
+                throw new Exception(nameof(IBlockchainService) + " has already been initialized!");
             }
 
             try

@@ -5,7 +5,7 @@ using Neo.UI.Core.Globalization.Resources;
 
 namespace Neo.UI.Core.Data
 {
-    public class FirstClassAssetItem : AssetItem
+    public class FirstClassAssetSummary : AssetSummary
     {
         public bool IssuerCertificateChecked { get; private set; }
 
@@ -21,7 +21,7 @@ namespace Neo.UI.Core.Data
 
         public AssetType AssetType { get; }
 
-        public FirstClassAssetItem(string assetId, ECPoint assetOwner, AssetType assetType)
+        public FirstClassAssetSummary(string assetId, ECPoint assetOwner, AssetType assetType)
         {
             this.AssetId = assetId;
             this.AssetOwner = assetOwner;

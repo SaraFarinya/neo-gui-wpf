@@ -3,52 +3,52 @@ using Neo.UI.Core.Data.Enums;
 
 namespace Neo.Gui.ViewModels.Tests.Builders
 {
-    public class AccountItemBuilder
+    public class AccountSummaryBuilder
     {
         private AccountType accountType = AccountType.Standard;
         private string labelInternal = "accountLabel";
         private string hashInternal;
         private Fixed8 neoBalance = Fixed8.Zero;
 
-        public AccountItemBuilder WithLabel(string label)
+        public AccountSummaryBuilder WithLabel(string label)
         {
             this.labelInternal = label;
             return this;
         }
 
-        public AccountItemBuilder WithHash(string hash)
+        public AccountSummaryBuilder WithHash(string hash)
         {
             this.hashInternal = hash;
             return this;
         }
         
-        public AccountItemBuilder StandardAccount()
+        public AccountSummaryBuilder StandardAccount()
         {
             this.accountType = AccountType.Standard;
             return this;
         }
 
-        public AccountItemBuilder NonStandardAccount()
+        public AccountSummaryBuilder NonStandardAccount()
         {
             this.accountType = AccountType.NonStandard;
             return this;
         }
 
-        public AccountItemBuilder WatchOnlyAccount()
+        public AccountSummaryBuilder WatchOnlyAccount()
         {
             this.accountType = AccountType.WatchOnly;
             return this;
         }
 
-        public AccountItemBuilder AccountWithNeoBalance()
+        public AccountSummaryBuilder AccountWithNeoBalance()
         {
             this.neoBalance = new Fixed8(1);
             return this;
         }
 
-        public AccountItem Build()
+        public AccountSummary Build()
         {
-            var account = new AccountItem(this.labelInternal, this.hashInternal, this.accountType);
+            var account = new AccountSummary(this.labelInternal, this.hashInternal, this.accountType);
 
             if (this.neoBalance != Fixed8.Zero)
             {

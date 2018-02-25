@@ -5,7 +5,7 @@ using Neo.UI.Core.Data;
 namespace Neo.Gui.ViewModels.Tests.Builders
 {
     // TODO Add NEP5AssetItemBuilder class
-    public class FirstClassAssetItemBuilder
+    public class FirstClassAssetSummaryBuilder
     {
         private string internalName = "Name";
         private string internalValue = "Value";
@@ -14,43 +14,43 @@ namespace Neo.Gui.ViewModels.Tests.Builders
         private ECPoint internalAssetOwner = new ECPoint();
         private AssetType internalAssetType = AssetType.Token;
 
-        public FirstClassAssetItemBuilder WithName(string name)
+        public FirstClassAssetSummaryBuilder WithName(string name)
         {
             this.internalName = name;
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithValue(string value)
+        public FirstClassAssetSummaryBuilder WithValue(string value)
         {
             this.internalValue = value;
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithIssuer(string issuer)
+        public FirstClassAssetSummaryBuilder WithIssuer(string issuer)
         {
             this.internalIssuer = issuer;
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithGoverningToken()
+        public FirstClassAssetSummaryBuilder WithGoverningToken()
         {
             this.internalAssetType = AssetType.GoverningToken;
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithUtilityToken()
+        public FirstClassAssetSummaryBuilder WithUtilityToken()
         {
             this.internalAssetType = AssetType.UtilityToken;
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithCustomToken()
+        public FirstClassAssetSummaryBuilder WithCustomToken()
         {
             this.internalAssetOwner = new ECPoint();
             return this;
         }
 
-        public FirstClassAssetItemBuilder WithAssetId(string assetId)
+        public FirstClassAssetSummaryBuilder WithAssetId(string assetId)
         {
             this.internalAssetId = assetId;
             return this;

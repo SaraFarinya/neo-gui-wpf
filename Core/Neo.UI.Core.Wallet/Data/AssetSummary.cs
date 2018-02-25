@@ -1,6 +1,6 @@
 ﻿namespace Neo.UI.Core.Data
 {
-    public abstract class AssetItem : BindableClass
+    public abstract class AssetSummary : BindableClass
     {
         private string name;
         private string issuer;

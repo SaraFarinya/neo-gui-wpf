@@ -4,9 +4,9 @@ namespace Neo.UI.Core.Wallet.Messages
 {
     public class AccountAddedMessage
     {
-        public AccountItem Account { get; }
+        public AccountSummary Account { get; }
 
-        public AccountAddedMessage(AccountItem account)
+        public AccountAddedMessage(AccountSummary account)
         {
             this.Account = account;
         }

@@ -533,11 +533,11 @@ namespace Neo.UI.Core.Wallet
             return assetStateDto;
         }
 
-        public bool CanViewCertificate(FirstClassAssetItem assetItem)
+        public bool CanViewCertificate(FirstClassAssetSummary assetSummary)
         {
-            if (assetItem == null) return false;
+            if (assetSummary == null) return false;
 
-            var queryResult = this.GetCertificateQueryResult(assetItem.AssetOwner);
+            var queryResult = this.GetCertificateQueryResult(assetSummary.AssetOwner);
 
             if (queryResult == null) return false;
 
@@ -546,9 +546,9 @@ namespace Neo.UI.Core.Wallet
                    queryResult.Type == CertificateQueryResultType.Invalid;
         }
 
-        public string ViewCertificate(FirstClassAssetItem assetItem)
+        public string ViewCertificate(FirstClassAssetSummary assetSummary)
         {
-            return this.certificateQueryService.GetCachedCertificatePath(assetItem.AssetOwner);
+            return this.certificateQueryService.GetCachedCertificatePath(assetSummary.AssetOwner);
         }
 
         public Fixed8 CalculateBonus()
@@ -579,9 +579,11 @@ namespace Neo.UI.Core.Wallet
             return this.CalculateBonus(references, height);
         }
 
-        public bool WalletContainsAccount(UInt160 scriptHash)
+        public bool WalletContainsAccount(string scriptHashStr)
         {
             this.ThrowIfWalletIsNotOpen();
+
+            var scriptHash = UInt160.Parse(scriptHashStr);
 
             return this.currentWallet.Contains(scriptHash);
         }
@@ -645,11 +647,11 @@ namespace Neo.UI.Core.Wallet
             }
         }
 
-        public void DeleteFirstClassAsset(FirstClassAssetItem assetItem)
+        public void DeleteFirstClassAsset(string assetIdStr)
         {
-            var value = this.GetFirstClassTokenAvailability(assetItem.AssetId);
+            var value = this.GetFirstClassTokenAvailability(assetIdStr);
 
-            var assetId = UInt256.Parse(assetItem.AssetId);
+            var assetId = UInt256.Parse(assetIdStr);
             var amountToDelete = Fixed8.Parse(value);
 
             var transactionParameters = new DeleteFirstClassAssetTransactionParameters(assetId, amountToDelete);
@@ -798,18 +800,11 @@ namespace Neo.UI.Core.Wallet
             this.TrySaveWallet();
         }
 
-        public bool DeleteAccount(AccountItem account)
+        public bool DeleteAccount(string accountScriptHash)
         {
             this.ThrowIfWalletIsNotOpen();
 
-            Guard.ArgumentIsNotNull(account, nameof(account));
-
-            if (account == null)
-            {
-                throw new ArgumentNullException(nameof(account));
-            }
-
-            var accountScriptHash = account.ScriptHash;
+            Guard.ArgumentIsNotNull(accountScriptHash, nameof(accountScriptHash));
 
             var deletedSuccessfully = this.currentWallet.DeleteAccount(UInt160.Parse(accountScriptHash));
 
@@ -1110,7 +1105,7 @@ namespace Neo.UI.Core.Wallet
                     : AccountType.NonStandard;
             }
 
-            var newAccountItem = new AccountItem(account.Label, account.ScriptHash.ToString(), accountType);
+            var newAccountItem = new AccountSummary(account.Label, account.ScriptHash.ToString(), accountType);
 
             this.currentWalletInfo.AddAccount(newAccountItem);
 
@@ -1135,8 +1130,8 @@ namespace Neo.UI.Core.Wallet
                 var scriptHash = UInt160.Parse(account.ScriptHash);
                 var neo = balanceNeo.ContainsKey(scriptHash) ? balanceNeo[scriptHash] : Fixed8.Zero;
                 var gas = balanceGas.ContainsKey(scriptHash) ? balanceGas[scriptHash] : Fixed8.Zero;
-                account.Neo = neo;
-                account.Gas = gas;
+                account.BalanceSummary.Neo = neo;
+                account.BalanceSummary.Gas = gas;
             }
 
             // TODO Publish an AccountBalancesChangedMessage
@@ -1228,7 +1223,7 @@ namespace Neo.UI.Core.Wallet
                                 break;
                         }
 
-                        var assetItem = new FirstClassAssetItem(
+                        var assetItem = new FirstClassAssetSummary(
                             asset.Asset.AssetId.ToString(),
                             asset.Asset.Owner,
                             asset.Asset.AssetType)
@@ -1291,7 +1286,7 @@ namespace Neo.UI.Core.Wallet
                     // Do not add item if it has a balance of zero
                     if (totalBalanceBigInt != BigInteger.Zero)
                     {
-                        var assetItem = new NEP5AssetItem(nep5ScriptHash.ToString())
+                        var assetItem = new NEP5AssetSummary(nep5ScriptHash.ToString())
                         {
                             TotalBalance = totalBalance.ToString()
                         };

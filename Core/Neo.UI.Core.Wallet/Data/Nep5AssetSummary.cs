@@ -2,9 +2,9 @@
 
 namespace Neo.UI.Core.Data
 {
-    public class NEP5AssetItem : AssetItem
+    public class NEP5AssetSummary : AssetSummary
     {
-        public NEP5AssetItem(string scriptHash)
+        public NEP5AssetSummary(string scriptHash)
         {
             this.ScriptHash = scriptHash;
         }
